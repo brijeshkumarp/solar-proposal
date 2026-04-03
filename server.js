@@ -1,24 +1,19 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const fs = require('fs-extra');
+const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const serverless = require('serverless-http');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-const DATA_DIR = path.join(__dirname, 'data');
+// ⚠️ Vercel uses /tmp for writable storage (temporary only)
+const DATA_DIR = '/tmp';
 const PROPOSALS_FILE = path.join(DATA_DIR, 'proposals.json');
 
-// ✅ Ensure data folder exists
-fs.ensureDirSync(DATA_DIR);
-
-// ✅ Middleware
+// Middleware
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
-
-// ✅ IMPORTANT: serve static files correctly
-app.use(express.static(path.join(__dirname, 'public')));
 
 // ==============================
 // 📦 FILE HELPERS
@@ -56,8 +51,6 @@ app.post('/api/proposals', async (req, res) => {
     try {
         const proposalData = req.body;
 
-        console.log("📥 Incoming Data:", proposalData); // ✅ DEBUG
-
         const proposals = await getProposals();
 
         const lastNumber = proposals.length > 0
@@ -67,17 +60,12 @@ app.post('/api/proposals', async (req, res) => {
         const newProposal = {
             id: uuidv4(),
             proposal_no: lastNumber + 1,
-
-            // ✅ SAVE ALL FORM DATA
             ...proposalData,
-
             createdAt: new Date().toISOString()
         };
 
         proposals.push(newProposal);
         await saveProposals(proposals);
-
-        console.log("✅ Saved Proposal:", newProposal); // ✅ DEBUG
 
         res.json({
             success: true,
@@ -85,7 +73,7 @@ app.post('/api/proposals', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('❌ Error creating proposal:', error);
+        console.error(error);
         res.status(500).json({ error: 'Failed to create proposal' });
     }
 });
@@ -152,7 +140,7 @@ app.delete('/api/proposals/:id', async (req, res) => {
     }
 });
 
-// ✅ DOWNLOAD JSON (FIX YOUR 404 ERROR)
+// DOWNLOAD JSON
 app.get('/api/download-proposals', async (req, res) => {
     try {
         const proposals = await getProposals();
@@ -167,26 +155,7 @@ app.get('/api/download-proposals', async (req, res) => {
 });
 
 // ==============================
-// 🌐 FRONTEND ROUTES
+// 🚀 EXPORT FOR VERCEL
 // ==============================
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/list', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'list.html'));
-});
-
-// ✅ IMPORTANT: preview route
-app.get('/preview/:id', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'preview.html'));
-});
-
-// ==============================
-// 🚀 SERVER START
-// ==============================
-
-app.listen(PORT, () => {
-    console.log(`🚀 Server running: http://localhost:${PORT}`);
-});
+module.exports = serverless(app);
