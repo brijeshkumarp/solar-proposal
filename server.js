@@ -8,7 +8,7 @@ const serverless = require('serverless-http');
 const app = express();
 
 // ⚠️ Vercel uses /tmp for writable storage (temporary only)
-const DATA_DIR = '/tmp';
+const DATA_DIR = '/tmp/data';
 const PROPOSALS_FILE = path.join(DATA_DIR, 'proposals.json');
 
 // Middleware
@@ -19,8 +19,17 @@ app.use(express.json({ limit: '10mb' }));
 // 📦 FILE HELPERS
 // ==============================
 
+async function ensureFile() {
+    try {
+        await fs.ensureFile(PROPOSALS_FILE);
+    } catch (err) {
+        console.error("File ensure error:", err);
+    }
+}
+
 async function getProposals() {
     try {
+        await ensureFile();
         const data = await fs.readJson(PROPOSALS_FILE);
         return Array.isArray(data) ? data : [];
     } catch (error) {
@@ -29,7 +38,12 @@ async function getProposals() {
 }
 
 async function saveProposals(proposals) {
-    await fs.writeJson(PROPOSALS_FILE, proposals, { spaces: 2 });
+    try {
+        await ensureFile();
+        await fs.writeJson(PROPOSALS_FILE, proposals, { spaces: 2 });
+    } catch (error) {
+        console.error("Save error:", error);
+    }
 }
 
 // ==============================
