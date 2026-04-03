@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Create Proposal</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .container-custom {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      width: 800px;
+      margin: 50px auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-bottom: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    form input,
+    form select,
+    form textarea {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    form input:focus,
+    form select:focus,
+    form textarea:focus {
+      border-color: #4a90e2;
+      outline: none;
+      box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #4a90e2;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #357abd;
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <div class="container-custom">
+
+
+<div class="d-flex align-items-center justify-content-between pb-4">
+  <h2>Create Proposal</h2>
+  
+  <a href="/list" class="btn btn-success">
+    View All Proposals
+  </a>
+  
+</div>
+    <form id="proposalForm" class="row">
+  <div class="col-lg-6">
+    <input type="text" name="client_name" id="client_name" placeholder="Client Name" required>
+  </div>
+
+  <div class="col-lg-6">
+    <select name="category" id="category">
+      <option value="residential">Residential</option>
+      <option value="commercial">Commercial</option>
+      <option value="industrial">Industrial</option>
+    </select>
+  </div>
+
+  <div class="col-lg-12">
+    <textarea name="address" id="address" placeholder="Address"></textarea>
+  </div>
+
+  <div class="col-lg-3">
+    <select name="grid_type" id="grid_type">
+      <option value="ongrid">On Grid</option>
+      <option value="offgrid">Off Grid</option>
+      <option value="hybrid">Hybrid</option>
+    </select>
+  </div>
+
+  <div class="col-lg-3">
+    <input type="text" name="capacity" id="capacity" placeholder="Capacity">
+  </div>
+
+  <div class="col-lg-3">
+    <input type="text" name="capacity_text" id="capacity_text" placeholder="Capacity Text">
+  </div>
+
+  <div class="col-lg-3">
+    <select name="brand" id="brand">
+      <option value="adani">Adani</option>
+      <option value="goldi">Goldi</option>
+      <option value="tata">Tata</option>
+      <option value="waree">Waree</option>
+    </select>
+  </div>
+
+  <div class="col-lg-12">
+    <input type="date" name="proposal_date" id="proposal_date" placeholder="Proposal Date" required>
+  </div>
+
+  <!-- PANEL -->
+  <div class="col-lg-12 mb-2 mt-4">
+    <h4>PANEL</h4>
+  </div>
+  <div class="col-lg-6">
+    <select name="panel_type" id="panel_type">
+      <option value="topcon">Topcon Bifacial</option>
+      <option value="pere">Pere Bifacial</option>
+    </select>
+  </div>
+  <div class="col-lg-6">
+    <input type="text" name="total_panel" id="total_panel" placeholder="Total Panels" required>
+  </div>
+  <div class="col-lg-6">
+    <select name="panel_capacity" id="panel_capacity">
+      <option value="580">580</option>
+      <option value="620">620</option>
+    </select>
+  </div>
+
+  <!-- INVERTER -->
+  <div class="col-lg-12 mb-2 mt-4">
+    <h4>INVERTER</h4>
+  </div>
+  <div class="col-lg-6">
+    <input type="text" name="inverter_type" id="inverter_type" placeholder="Inverter Type" required>
+  </div>
+  <div class="col-lg-6">
+    <input type="text" name="inverter_capacity" id="inverter_capacity" placeholder="Inverter Capacity" required>
+  </div>
+  <div class="col-lg-6">
+    <input type="text" name="inverter_warranty" id="inverter_warranty" placeholder="Inverter Warranty" required>
+  </div>
+
+  <!-- RESIDENTIAL COST -->
+  <div id="residential_cost_section">
+    <div class="col-lg-12 mb-2 mt-4">
+      <h4>COST For Residential</h4>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <input type="number" name="res_system_cost" id="res_system_cost" placeholder="System Cost">
+      </div>
+      <div class="col-lg-6">
+        <input type="number" name="res_net_meter_charges" id="res_net_meter_charges" placeholder="Net Meter Charges">
+      </div>
+      <div class="col-lg-6">
+        <input type="number" name="subsidy" id="subsidy" placeholder="Subsidy">
+      </div>
+    </div>
+  </div>
+
+  <!-- OTHER COST -->
+  <div id="other_cost_section" style="display:none;">
+    <div class="col-lg-12 mb-2 mt-4">
+      <h4>COST For Others</h4>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <input type="number" name="other_system_cost" id="other_system_cost" placeholder="System Cost">
+      </div>
+      <div class="col-lg-6">
+        <input type="number" name="other_net_meter_charges" id="other_net_meter_charges" placeholder="Net Meter Charges">
+      </div>
+      <div class="col-lg-6">
+        <input type="number" name="geda_fees" id="geda_fees" placeholder="Geda Fees">
+      </div>
+    </div>
+  </div>
+
+  <button type="submit">Generate Proposal</button>
+</form>
+  </div>
+
+  <script src="/assets/js/app.js"></script>
+</body>
+
+</html>
