@@ -15,6 +15,20 @@
       "src": "/api/(.*)",
       "dest": "server.js"
     },
+
+    {
+      "src": "/preview",
+      "dest": "/public/preview.html"
+    },
+    {
+      "src": "/list",
+      "dest": "/public/list.html"
+    },
+    {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+
     {
       "handle": "filesystem"
     }
